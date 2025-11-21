@@ -1,0 +1,8 @@
+/dist
+/node_modules
+/public
+/package.json
+/pnpm-lock.yaml
+/yarn.lock
+*.svg
+*.sh

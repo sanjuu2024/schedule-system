@@ -1,0 +1,139 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+.pnpm/
+.npm/
+
+# Build outputs
+dist/
+dist-ssr/
+*.local
+
+# Vite cache
+.vite/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Testing
+coverage/
+*.lcov
+.nyc_output/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+
+# ========================================
+# Java / JavaWeb / Servlet / Tomcat
+# ========================================
+
+# Compiled class files
+*.class
+
+# Package files (if any)
+*.jar
+*.war
+*.ear
+
+# Log files
+*.log
+
+# Tomcat specific
+/Tomcat/
+/tomcat/
+/apache-tomcat-*/
+
+# Eclipse project files (if using Eclipse)
+.classpath
+.project
+.settings/
+
+# IntelliJ IDEA project files
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# NetBeans project files
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+
+# ========================================
+# IDE / Editors
+# ========================================
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# JetBrains IDEs (IntelliJ IDEA, WebStorm, etc.)
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+
+# ========================================
+# Operating System
+# ========================================
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.stackdump
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.directory
+
+
+# ========================================
+# Miscellaneous
+# ========================================
+
+# Backup files
+*.bak
+*.swp
+*.swo
+*~
+
+# Sensitive data
+*.pem
+*.key
+*.cert
+.env.production
