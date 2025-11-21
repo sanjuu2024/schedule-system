@@ -46,7 +46,7 @@ coverage/
 *.class
 
 # Package files (if any)
-*.jar
+# *.jar   # 当前项目并没有maven / gradle管理所以只能把jar包也push一下了...
 *.war
 *.ear
 
