@@ -5,8 +5,14 @@ export interface LoginParams {
 }
 
 // 注册接口参数限制
-export interface SignupParams {
+export interface RegisterParams {
     username: string;
     password: string;
-    email: string;
+}
+
+// 返回结果
+export interface ResponseData {
+    code: number;
+    message: string;
+    data?: any;
 }

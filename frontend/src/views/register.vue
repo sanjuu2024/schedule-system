@@ -1,17 +1,17 @@
 <template>
     <div class="box">
         <el-card>
-            <h2>登录</h2>
+            <h2>注册</h2>
             <el-form
                 label-width="auto"
                 label-position="top"
-                :model="loginForm"
-                ref="theLoginForm"
+                :model="registerForm"
+                ref="theRegisterForm"
                 :rules="rules"
             >
                 <el-form-item prop="username" label="用户名">
                     <el-input
-                        v-model="loginForm.username"
+                        v-model="registerForm.username"
                         placeholder="请输入用户名"
                         :prefix-icon="User"
                     ></el-input>
@@ -19,7 +19,7 @@
                 <el-form-item prop="password" label="密码">
                     <el-input
                         type="password"
-                        v-model="loginForm.password"
+                        v-model="registerForm.password"
                         placeholder="请输入密码"
                         :prefix-icon="Lock"
                         show-password
@@ -27,42 +27,45 @@
                 </el-form-item>
             </el-form>
             <div class="footer">
-                <el-button type="primary" @click="login" :disbled="!validated">
-                    登录
+                <el-button
+                    type="primary"
+                    @click="register"
+                    :disabled="!validated"
+                >
+                    注册
                 </el-button>
                 <el-button type="info" @click="resetForm">重置</el-button>
             </div>
-            <el-link type="primary" @click="router.push('/register')">
-                去注册
+            <el-link type="primary" @click="router.push('/login')">
+                去登录
             </el-link>
         </el-card>
     </div>
 </template>
 
 <script setup lang="ts">
-import { reqLogin } from '@/api/login';
-import type { LoginParams } from '@/api/type';
+import { reqCheckUsername, reqRegister } from '@/api/register';
+import type { RegisterParams, ResponseData } from '@/api/type';
 import { Lock, User } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
 import { reactive, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-
 const router = useRouter();
 
 defineOptions({
-    name: 'Login',
+    name: 'Register',
 });
 
 // 表单数据
-let loginForm = reactive<LoginParams>({
+let registerForm = reactive<RegisterParams>({
     username: '',
     password: '',
 });
 
 // 表单实例
-let theLoginForm = ref();
+let theRegisterForm = ref();
 
-// 控制登录按钮是否可用
+// 控制注册按钮是否可用
 let validated = ref<boolean>(false);
 
 // 校验规则
@@ -81,6 +84,21 @@ const rules = {
                     );
                 } else {
                     callback();
+                }
+            },
+        },
+        {
+            trigger: 'blur',
+            async validator(rule: any, value: string, callback: any) {
+                if (!usernamePattern.test(value)) return callback();
+                try {
+                    let res: ResponseData = await reqCheckUsername(value);
+                    if (res.code !== 200) {
+                        return callback(new Error(res.message));
+                    }
+                    callback();
+                } catch (err) {
+                    ElMessage.error(err as string);
                 }
             },
         },
@@ -104,13 +122,13 @@ const rules = {
 };
 
 function resetForm() {
-    loginForm.username = loginForm.password = '';
-    theLoginForm.value.resetFields();
+    registerForm.username = registerForm.password = '';
+    theRegisterForm.value.resetFields();
 }
 
 // 静默校验(只检查格式,禁用确认提交按钮而不显示错误信息)(显示错误让el-form封装的rules去干)
 function silentValidation() {
-    const { username, password } = loginForm;
+    const { username, password } = registerForm;
 
     // 检查每个字段是否符合格式要求
     const usernameValid = usernamePattern.test(username);
@@ -121,21 +139,22 @@ function silentValidation() {
 }
 
 watch(
-    () => loginForm,
+    () => registerForm,
     () => {
         silentValidation(); // 实时更新按钮状态，但不显示错误(显示错误让el-form封装的rules去干)
     },
     { deep: true, immediate: true },
 );
 
-// 登录
-async function login() {
+// 注册
+async function register() {
     try {
-        let res = await reqLogin(loginForm);
+        let res = await reqRegister(registerForm);
         if (res.code === 200) {
-            ElMessage.success('登录成功！');
+            ElMessage.success('注册成功！即将跳转至登录页面。');
+            router.push('/login');
         } else {
-            ElMessage.error('登录失败！' + res.message);
+            ElMessage.error('注册失败！' + res.message);
         }
     } catch (err) {
         console.log(err);

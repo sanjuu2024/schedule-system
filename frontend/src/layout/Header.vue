@@ -5,7 +5,7 @@
             <el-button
                 :icon="User"
                 type="warning"
-                @click="router.push('/signup')"
+                @click="router.push('/register')"
             >
                 注册
             </el-button>

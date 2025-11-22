@@ -1,5 +1,6 @@
 package com.atguigu.schedule.pojo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 @AllArgsConstructor   // 添加全参构造
@@ -15,5 +16,7 @@ import lombok.*;
 public class SysUser {
     private Integer uid;
     private String username;
+    
+    @JsonProperty("password")  // 前端使用 password，后端映射到 userPwd
     private String userPwd;
 }

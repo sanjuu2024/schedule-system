@@ -3,7 +3,7 @@ import request from '@/utils/request';
 import type { LoginParams } from './type';
 
 const API = {
-    LOGIN_URL: '/api/login',
+    LOGIN_URL: '/v1/user/login',
 };
 
 // 登录接口

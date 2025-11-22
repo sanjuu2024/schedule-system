@@ -12,6 +12,34 @@ import java.util.List;
 
 public class BaseDao {
     /**
+     * 将下划线命名转换为驼峰命名
+     * 例如：user_pwd -> userPwd
+     */
+    private String underlineToCamel(String underline) {
+        if (underline == null || underline.isEmpty()) {
+            return underline;
+        }
+        
+        StringBuilder result = new StringBuilder();
+        boolean toUpperCase = false;
+        
+        for (char c : underline.toCharArray()) {
+            if (c == '_') {
+                toUpperCase = true;
+            } else {
+                if (toUpperCase) {
+                    result.append(Character.toUpperCase(c));
+                    toUpperCase = false;
+                } else {
+                    result.append(Character.toLowerCase(c));
+                }
+            }
+        }
+        
+        return result.toString();
+    }
+    
+    /**
      * 通用的增删改方法
      * @param sql 要执行的SQL语句
      * @param params 占位符要赋值的参数
@@ -84,13 +112,28 @@ public class BaseDao {
                 Object value = resultSet.getObject(i);
 
                 // (2)通过下标获取该列的名字(即对象的属性字段的名字)
-                String fieldName = metaData.getColumnLabel(i);
+                String columnName = metaData.getColumnLabel(i);
+                
+                // (3)将数据库列名（下划线命名）转换为Java字段名（驼峰命名）
+                String fieldName = underlineToCamel(columnName);
 
-                // (3)然后通过反射，结合这个fieldName，获取该对象的该属性并且赋值
-                Field field = clazz.getDeclaredField(fieldName);
-                // 然后field很可能是private，所以还要取消属性的封装检查
-                field.setAccessible(true);
-                field.set(t,value);
+                // (4)然后通过反射，结合这个fieldName，获取该对象的该属性并且赋值
+                try {
+                    Field field = clazz.getDeclaredField(fieldName);
+                    // 然后field很可能是private，所以还要取消属性的封装检查
+                    field.setAccessible(true);
+                    field.set(t, value);
+                } catch (NoSuchFieldException e) {
+                    // 如果找不到驼峰命名的字段，尝试使用原始列名
+                    try {
+                        Field field = clazz.getDeclaredField(columnName);
+                        field.setAccessible(true);
+                        field.set(t, value);
+                    } catch (NoSuchFieldException ex) {
+                        // 字段不存在，跳过该列
+                        System.err.println("字段不存在: " + fieldName + " 或 " + columnName);
+                    }
+                }
             }
             list.add(t);
         }

@@ -7,7 +7,6 @@ export const constRoutes = [
         component: () => import('@/layout/index.vue'),
         meta: {
             title: '首页',
-            icon: 'HomeFilled',
         },
         children: [
             {
@@ -16,16 +15,14 @@ export const constRoutes = [
                 component: () => import('@/views/login.vue'),
                 meta: {
                     title: '登录',
-                    icon: 'User',
                 },
             },
             {
-                name: 'Signup',
-                path: 'signup',
-                component: () => import('@/views/signup.vue'),
+                name: 'Register',
+                path: 'register',
+                component: () => import('@/views/register.vue'),
                 meta: {
                     title: '注册',
-                    icon: 'UserPlus',
                 },
             },
             {
@@ -34,9 +31,16 @@ export const constRoutes = [
                 component: () => import('@/views/schedule.vue'),
                 meta: {
                     title: '日程',
-                    icon: 'Calendar',
                 },
             },
         ],
+    },
+    {
+        name: '404',
+        path: '/:pathMatch(.*)*',
+        component: () => import('@/components/404.vue'),
+        meta: {
+            title: '404 Not Found',
+        },
     },
 ] as RouteRecordRaw[];
