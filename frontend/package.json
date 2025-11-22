@@ -15,9 +15,12 @@
     "format": "prettier --write \"src/**/*.{js,ts,vue,html,css,scss,md}\""
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.3.2",
     "axios": "^1.13.2",
+    "element-plus": "^2.11.8",
     "husky": "^9.1.7",
-    "vue": "^3.5.24"
+    "vue": "^3.5.24",
+    "vue-router": "^4.6.3"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.28.5",
