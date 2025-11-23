@@ -23,12 +23,6 @@ public class SysUserController extends BaseController {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // 设置跨域请求头
-        resp.setHeader("Access-Control-Allow-Origin", "*");
-        resp.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        resp.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-        resp.setHeader("Access-Control-Max-Age", "3600");
-        
         String pathInfo = req.getPathInfo();
         String method = req.getMethod();
         
