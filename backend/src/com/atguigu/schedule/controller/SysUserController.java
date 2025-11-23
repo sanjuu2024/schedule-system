@@ -1,6 +1,6 @@
 package com.atguigu.schedule.controller;
 
-import com.atguigu.schedule.common.ErrorCode;
+import com.atguigu.schedule.common.ResultCodeEnum;
 import com.atguigu.schedule.pojo.SysUser;
 import com.atguigu.schedule.service.SysUserService;
 import com.atguigu.schedule.service.impl.SysUserServiceImpl;
@@ -45,11 +45,11 @@ public class SysUserController extends BaseController {
             } else if ("/logout".equals(pathInfo) && "POST".equals(method)) {
                 logout(req,resp);
             } else {
-                error(resp, 404, "接口不存在");
+                fail(resp, ResultCodeEnum.NOT_FOUND);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            error(resp, 500, ErrorCode.SYSTEM_ERROR, "服务器内部错误");  // HTTP 500 + 业务码 9999
+            fail(resp, ResultCodeEnum.SYSTEM_ERROR);
         }
     }
 
@@ -70,9 +70,9 @@ public class SysUserController extends BaseController {
         boolean result = sysUserService.register(user);
         
         if (result) {
-            success(resp, "注册成功", null);
+            success(resp, "注册成功");
         } else {
-            error(resp, 409, ErrorCode.USERNAME_EXIST, "用户名已存在");  // HTTP 409 + 业务码 1001
+            fail(resp, ResultCodeEnum.USERNAME_EXIST);
         }
     }
     
@@ -96,7 +96,7 @@ public class SysUserController extends BaseController {
             
             success(resp, "登录成功", data);
         } else {
-            error(resp, 401, ErrorCode.LOGIN_ERROR, "用户名或密码错误");  // HTTP 401 + 业务码 1002
+            fail(resp, ResultCodeEnum.USERNAME_OR_PASSWORD_ERROR);
         }
     }
 
@@ -117,7 +117,7 @@ public class SysUserController extends BaseController {
 
             success(resp, "获取成功", data);
         } catch (JwtException e) {
-            error(resp, 401, ErrorCode.TOKEN_INVALID, "无效的令牌");  // HTTP 401 + 业务码 1003
+            fail(resp, ResultCodeEnum.TOKEN_INVALID, "无效的令牌");
         }
     }
 
@@ -127,6 +127,6 @@ public class SysUserController extends BaseController {
     protected void logout(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         // 由于 JWT 是无状态的，服务器端不保存会话信息，因此无法真正“注销”一个 JWT。
         // 通常的做法是让客户端删除存储的 JWT。
-        success(resp, "退出成功", null);
+        success(resp, "退出成功");
     }
 }

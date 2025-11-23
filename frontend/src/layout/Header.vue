@@ -16,11 +16,7 @@
             >
                 登录
             </el-button>
-            <el-button
-                :icon="SwitchButton"
-                type="danger"
-                @click="userStore.userLogout()"
-            >
+            <el-button :icon="SwitchButton" type="danger" @click="logout">
                 退出
             </el-button>
             <el-button
@@ -47,6 +43,14 @@ import { useUserStore } from '@/store/user';
 
 const router = useRouter();
 const userStore = useUserStore();
+
+async function logout() {
+    try {
+        await userStore.userLogout();
+    } catch (error) {
+        console.error('退出失败：', error);
+    }
+}
 </script>
 
 <style scoped lang="scss">

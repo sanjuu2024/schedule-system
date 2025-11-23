@@ -5,6 +5,7 @@ export const constRoutes = [
         name: 'Layout',
         path: '/',
         component: () => import('@/layout/index.vue'),
+        redirect: '/schedule',
         meta: {
             title: '首页',
         },
