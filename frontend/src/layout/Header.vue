@@ -2,7 +2,7 @@
     <div class="box">
         <h1>欢迎来到日程管理系统</h1>
         <div class="nav">
-            <el-button
+            <!-- <el-button
                 :icon="User"
                 type="warning"
                 @click="router.push('/register')"
@@ -15,16 +15,16 @@
                 @click="router.push('/login')"
             >
                 登录
-            </el-button>
-            <el-button :icon="SwitchButton" type="danger" @click="logout">
-                退出
-            </el-button>
+            </el-button> -->
             <el-button
                 :icon="Calendar"
                 type="primary"
                 @click="router.push('/schedule')"
             >
                 查看日程
+            </el-button>
+            <el-button :icon="SwitchButton" type="danger" @click="logout">
+                退出
             </el-button>
         </div>
         <hr />
@@ -35,8 +35,8 @@
 import {
     Calendar,
     SwitchButton,
-    User,
-    UserFilled,
+    // User,
+    // UserFilled,
 } from '@element-plus/icons-vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/store/user';
@@ -56,6 +56,9 @@ async function logout() {
 <style scoped lang="scss">
 .box {
     text-align: center;
+    .nav {
+        text-align: right; // 让按钮们靠右显示(就两个)
+    }
 }
 
 h1 {

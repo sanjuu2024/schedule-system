@@ -46,6 +46,7 @@ import { reactive, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/store/user';
 import { useRoute } from 'vue-router';
+import { ElNotification } from 'element-plus';
 
 const route = useRoute();
 const router = useRouter();
@@ -131,6 +132,11 @@ async function login() {
     try {
         await userStore.userLogin(loginForm);
         router.push({ path: (route.query.redirect as string) || '/schedule' });
+        ElNotification({
+            title: '登录成功',
+            message: `欢迎您，${userStore.userInfo.username}！`,
+            type: 'success',
+        });
     } catch (error) {
         console.log(error);
     }
