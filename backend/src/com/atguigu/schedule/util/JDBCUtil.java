@@ -1,5 +1,6 @@
 package com.atguigu.schedule.util;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 
 import javax.sql.DataSource;
@@ -9,8 +10,8 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class JDBCUtil {
-    // 🍉创建连接池引用，因为要提供给当前项目的全局使用，所以创建为静态的。
-    private static DataSource dataSource;
+    // 🍉创建连接池引用，因为要提供给当前项目全局使用，所以创建为静态的。
+    private static DruidDataSource dataSource;
     private static ThreadLocal<Connection> threadLocal = new ThreadLocal<>();
 
     // 🍉项目启动时，即拆功能键连接池对象，赋值给dataSource
@@ -20,7 +21,7 @@ public class JDBCUtil {
             InputStream inputStream = JDBCUtil.class.getClassLoader().getResourceAsStream("db.properties");
             properties.load(inputStream);
 
-            dataSource = DruidDataSourceFactory.createDataSource(properties);
+            dataSource = (DruidDataSource) DruidDataSourceFactory.createDataSource(properties);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -54,6 +55,16 @@ public class JDBCUtil {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+    
+    /**
+     * 关闭数据源，释放资源
+     * 在应用关闭时调用，防止内存泄漏
+     */
+    public static void closeDataSource() {
+        if (dataSource != null) {
+            dataSource.close();
         }
     }
 }
