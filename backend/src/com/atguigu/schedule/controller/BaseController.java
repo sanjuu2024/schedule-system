@@ -38,10 +38,12 @@ public abstract class BaseController extends HttpServlet {
     
     /**
      * 返回成功响应
+     * HTTP 200 + {code, message, data}
      */
     protected void success(HttpServletResponse resp, String message, Object data) throws IOException {
+        resp.setStatus(200);  // HTTP 状态码
         Map<String, Object> result = new HashMap<>();
-        result.put("code", 200);
+        result.put("code", 200);  // 业务状态码
         result.put("message", message);
         result.put("data", data);
         writeJSON(resp, result);
@@ -49,12 +51,27 @@ public abstract class BaseController extends HttpServlet {
     
     /**
      * 返回失败响应
+     * @param httpStatus HTTP 状态码
+     * @param code 业务状态码
+     *              1001 - 用户名已存在
+     *              1002 - 用户名或密码错误
+     *              1003 - token 无效
+     *              9999 - 服务器内部错误
+     * @param message 错误消息
      */
-    protected void error(HttpServletResponse resp, int code, String message) throws IOException {
+    protected void error(HttpServletResponse resp, int httpStatus, int code, String message) throws IOException {
+        resp.setStatus(httpStatus);  // 设置 HTTP 状态码
         Map<String, Object> result = new HashMap<>();
-        result.put("code", code);
+        result.put("code", code);  // 业务状态码
         result.put("message", message);
         result.put("data", null);
         writeJSON(resp, result);
+    }
+    
+    /**
+     * 返回失败响应（简化版：httpStatus = code）
+     */
+    protected void error(HttpServletResponse resp, int code, String message) throws IOException {
+        error(resp, code, code, message);  // HTTP 状态码和业务码相同
     }
 }

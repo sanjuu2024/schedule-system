@@ -22,8 +22,15 @@ public interface SysUserService {
 
     /**
      * 用户登录
-     * @param user 用户信息
-     * @return true-登录成功，false-登录失败
+     * @param user 用户信息（包含用户名和密码）
+     * @return 登录成功返回用户对象，失败返回null
      */
-    boolean login(SysUser user);
+    SysUser login(SysUser user);
+
+    /**
+     * 根据用户ID查询用户信息
+     * @param uid 用户ID
+     * @return 用户对象
+     */
+    SysUser findByUid(Integer uid);
 }

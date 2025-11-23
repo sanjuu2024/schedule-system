@@ -4,6 +4,7 @@ import com.atguigu.schedule.dao.SysUserDao;
 import com.atguigu.schedule.dao.impl.SysUserDaoImpl;
 import com.atguigu.schedule.pojo.SysUser;
 import com.atguigu.schedule.service.SysUserService;
+import com.atguigu.schedule.util.JWTUtil;
 import com.atguigu.schedule.util.MD5Util;
 
 public class SysUserServiceImpl implements SysUserService {
@@ -41,21 +42,40 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public boolean login(SysUser user) {
-        try{
-            // 1. 判断用户名是否存在
-            if (!checkUsername(user.getUsername())) {
-                return false;   // 用户名不存在，登录失败
+    public SysUser login(SysUser user) {
+        try {
+            // 1. 根据用户名查询用户
+            SysUser existingUser = sysUserDao.findByUsername(user.getUsername());
+            if (existingUser == null) {
+                return null;   // 用户名不存在，登录失败
             }
 
-            // 2. 判断密码是否符合
+            // 2. 验证密码
             String encryptedPwd = MD5Util.encrypt(user.getUserPwd());
-            SysUser existingUser = sysUserDao.findByUsername(user.getUsername());
-            return existingUser.getUserPwd().equals(encryptedPwd);
-
-        } catch(Exception e){
+            if (existingUser.getUserPwd().equals(encryptedPwd)) {
+                // 密码正确，返回用户对象（🔺🔺🔺不包含密码）
+                existingUser.setUserPwd(null);
+                return existingUser;
+            }
+            
+            return null;  // 密码错误
+        } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return null;
+        }
+    }
+
+    @Override
+    public SysUser findByUid(Integer uid) {
+        try {
+            SysUser user = sysUserDao.findByUid(uid);
+            if (user != null) {
+                user.setUserPwd(null);  // 不返回密码
+            }
+            return user;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

@@ -1,8 +1,12 @@
 package com.atguigu.schedule.controller;
 
+import com.atguigu.schedule.common.ErrorCode;
 import com.atguigu.schedule.pojo.SysUser;
 import com.atguigu.schedule.service.SysUserService;
 import com.atguigu.schedule.service.impl.SysUserServiceImpl;
+import com.atguigu.schedule.util.JWTUtil;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -36,12 +40,16 @@ public class SysUserController extends BaseController {
                 register(req, resp);
             } else if ("/login".equals(pathInfo) && "POST".equals(method)) {
                 login(req, resp);
+            } else if ("/info".equals(pathInfo) && "GET".equals(method)) {
+                userInfo(req,resp);
+            } else if ("/logout".equals(pathInfo) && "POST".equals(method)) {
+                logout(req,resp);
             } else {
                 error(resp, 404, "接口不存在");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            error(resp, 500, "服务器内部错误");
+            error(resp, 500, ErrorCode.SYSTEM_ERROR, "服务器内部错误");  // HTTP 500 + 业务码 9999
         }
     }
 
@@ -64,7 +72,7 @@ public class SysUserController extends BaseController {
         if (result) {
             success(resp, "注册成功", null);
         } else {
-            error(resp, 400, "注册失败，用户名已存在");
+            error(resp, 409, ErrorCode.USERNAME_EXIST, "用户名已存在");  // HTTP 409 + 业务码 1001
         }
     }
     
@@ -72,12 +80,53 @@ public class SysUserController extends BaseController {
      * 用户登录
      */
     protected void login(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        SysUser user = readJSON(req,SysUser.class);
-        boolean result = sysUserService.login(user);
-        if (result){
-            success(resp,"登录成功",null);
-        } else{
-            error(resp,400,"登录失败，用户名或密码错误");
+        SysUser loginUser = readJSON(req, SysUser.class);
+        
+        // 调用 Service 层验证用户
+        SysUser user = sysUserService.login(loginUser);
+        
+        if (user != null) {
+            // 登录成功，生成 JWT Token
+            String token = JWTUtil.generateToken(user.getUid(), user.getUsername());
+            
+            // 返回 token 和用户信息
+            Map<String, Object> data = new HashMap<>();
+            data.put("token", token);
+            data.put("user", user);
+            
+            success(resp, "登录成功", data);
+        } else {
+            error(resp, 401, ErrorCode.LOGIN_ERROR, "用户名或密码错误");  // HTTP 401 + 业务码 1002
         }
+    }
+
+    /**
+     * 用户信息
+     */
+    protected void userInfo(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String authHeader = req.getHeader("Authorization");
+        String token = authHeader.substring(7);
+        try {
+            Claims claims = JWTUtil.validateToken(token);
+            Integer uid = claims.get("uid", Integer.class);
+            String username = claims.get("username", String.class);
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("uid", uid);
+            data.put("username", username);
+
+            success(resp, "获取成功", data);
+        } catch (JwtException e) {
+            error(resp, 401, ErrorCode.TOKEN_INVALID, "无效的令牌");  // HTTP 401 + 业务码 1003
+        }
+    }
+
+    /**
+     * 用户退出
+     */
+    protected void logout(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        // 由于 JWT 是无状态的，服务器端不保存会话信息，因此无法真正“注销”一个 JWT。
+        // 通常的做法是让客户端删除存储的 JWT。
+        success(resp, "退出成功", null);
     }
 }

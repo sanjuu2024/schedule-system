@@ -19,7 +19,7 @@
             <el-button
                 :icon="SwitchButton"
                 type="danger"
-                @click="router.push('/')"
+                @click="userStore.userLogout()"
             >
                 退出
             </el-button>
@@ -43,7 +43,10 @@ import {
     UserFilled,
 } from '@element-plus/icons-vue';
 import { useRouter } from 'vue-router';
+import { useUserStore } from '@/store/user';
+
 const router = useRouter();
+const userStore = useUserStore();
 </script>
 
 <style scoped lang="scss">

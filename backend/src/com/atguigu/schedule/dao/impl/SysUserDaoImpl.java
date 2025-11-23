@@ -14,6 +14,13 @@ public class SysUserDaoImpl extends BaseDao implements SysUserDao {
     }
     
     @Override
+    public SysUser findByUid(Integer uid) throws Exception {
+        String sql = "select * from sys_user where uid=?";
+        List<SysUser> list = executeQuery(SysUser.class, sql, uid);
+        return list.isEmpty() ? null : list.get(0);
+    }
+    
+    @Override
     public int insert(SysUser user) throws Exception {
         String sql = "insert into sys_user (username, user_pwd) values (?, ?)";
         return executeUpdate(sql, user.getUsername(), user.getUserPwd());

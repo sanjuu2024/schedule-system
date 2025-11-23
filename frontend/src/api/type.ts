@@ -16,3 +16,9 @@ export interface ResponseData {
     message: string;
     data?: any;
 }
+
+// 用户信息类型
+export interface UserInfo {
+    id: number;
+    username: string;
+}

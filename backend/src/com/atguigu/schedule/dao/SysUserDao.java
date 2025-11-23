@@ -19,4 +19,11 @@ public interface SysUserDao{
      * @return 影响的行数
      */
     int insert(SysUser user) throws Exception;
+    
+    /**
+     * 根据UID查询用户
+     * @param uid 用户ID
+     * @return 用户对象，不存在返回null
+     */
+    SysUser findByUid(Integer uid) throws Exception;
 }
