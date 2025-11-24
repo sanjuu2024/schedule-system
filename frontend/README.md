@@ -1,135 +1,270 @@
-# 个人 Vue3 + vite 开发模板
+# 📱 日程管理系统 - 前端
+
+基于 Vue3 + TypeScript + Element Plus 构建的现代化前端应用。
 
 
 
-### 🍰 使用指南
+## 🎯 技术栈
 
-- 复制模板内所有文件到目标文件夹。
-- （在目标文件夹根目录下）执行：
-
->    过程中如果出现warning，跟着指令运行pnpm approve-builds就行（空格选择enter安装）
-
-```cmd
-pnpm i
-```
-
--   如果是全栈项目推荐根目录和前端项目的包统一管理，在根目录下添加`pnpm-workspace.yaml`，写入：（并且在根目录中执行 `pnpm i`。）
-
-```json
-packages:
-  - "frontend"
-```
+- **框架**: Vue 3.5.x (Composition API)
+- **语言**: TypeScript 5.x
+- **UI 库**: Element Plus 2.11.x
+- **状态管理**: Pinia 3.x
+- **路由**: Vue Router 4.x
+- **HTTP 客户端**: Axios 1.x
+- **构建工具**: Vite 6.x
+- **代码规范**: ESLint + Prettier + Stylelint
+- **Git Hook**: Husky + Commitlint
 
 
 
-### ⚒️ 命令
-
--   `pnpm run lint`：运行 ESLint 检查 `src` 目录下的所有代码。
--   `pnpm run fix`：在上一条命令的基础上自动修复eslint可修复的问题。
--   `pnpm run lint:style`：检查项目 `src` 目录下的样式文件，匹配以下类型：
-    -   `.css`
-    -   `.scss`
-    -   `.vue` 文件中的 `<style>` 标签内容
--   `pnpm run lint:style-fix`：在上一条命令的基础上自动修复stylelint可修复的问题。
--   `format`：使用 Prettier 自动格式化 src 下的代码和文档文件（js, ts, vue, html, css, scss, md）。
-
-
-
-### 🍕 注
-
--   已配置 `@` 为 `src/`。
--   已安装 `axios` 和 `husky`。
-
-
-
-### 🍔 可选
-
-#### 1. 关于husky
-
-鉴于可能是全栈项目，就没直接在模板中配置husky。
-
-不管是哪种类型，前端项目相关的请按照以下配置：（**以下操作都在项目根目录执行**）
-
--   如果没有package.json请先执行：
-
-```cmd
-pnpm init
-```
-
--   执行：
-
-```cmd
-pnpm add -D husky @commitlint/config-conventional @commitlint/cli commitizen cz-conventional-changelog
-git init
-pnpm husky install   # 初始化.husky/文件夹
-```
-
--   创建 `commitlint.config.js`：
-
-```js
-module.exports = {
-    extends: ['@commitlint/config-conventional'],
-};
-```
-
--   在 `.husky/` 文件夹下创建 `commit-msg`，写入：
+## 📦 项目结构
 
 ```
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-npx --no -- commitlint --edit ${1}
+frontend/
+├── public/                 # 静态资源
+├── src/
+│   ├── api/               # API 接口
+│   │   ├── schedule.ts    # 日程接口
+│   │   ├── user.ts        # 用户接口
+│   │   └── type.ts        # 类型定义
+│   ├── assets/            # 资源文件
+│   │   ├── images/        # 图片
+│   │   └── styles/        # 全局样式
+│   ├── components/        # 公共组件
+│   ├── enums/             # 枚举常量
+│   │   └── ErrorCode.ts   # 错误码枚举
+│   ├── layout/            # 布局组件
+│   │   ├── Header.vue     # 头部
+│   │   └── index.vue      # 布局容器
+│   ├── router/            # 路由配置
+│   │   ├── index.ts       # 路由实例
+│   │   └── routes.ts      # 路由表
+│   ├── store/             # 状态管理
+│   │   ├── index.ts       # Pinia 入口
+│   │   └── user.ts        # 用户模块
+│   ├── utils/             # 工具函数
+│   │   ├── request.ts     # Axios 封装
+│   │   ├── token.ts       # Token 管理
+│   │   └── debounce.ts    # 防抖函数
+│   ├── views/             # 页面组件
+│   │   ├── login.vue      # 登录页
+│   │   ├── register.vue   # 注册页
+│   │   └── schedule.vue   # 日程管理页
+│   ├── App.vue            # 根组件
+│   ├── main.ts            # 入口文件
+│   └── permission.ts      # 路由守卫
+├── .eslintrc.js           # ESLint 配置
+├── .prettierrc            # Prettier 配置
+├── stylelintrc.cjs        # Stylelint 配置
+├── tsconfig.json          # TypeScript 配置
+├── vite.config.ts         # Vite 配置
+└── package.json           # 依赖配置
 ```
 
--   把 `.husky/pre-commit` 修改为：
 
-```cmd
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
 
-# cd frontend   # 如果是在全站项目中才需要写这句
+## 🚀 快速开始
+
+### 安装依赖
+
+推荐使用 pnpm：
+
+```bash
+# 如果没有 pnpm，先安装
+npm install -g pnpm
+
+# 安装项目依赖
+pnpm install
+```
+
+### 开发模式
+
+```bash
+pnpm run dev
+```
+
+自动打开浏览器访问 `http://localhost:5173`（具体端口视情况而定）
+
+### 生产构建
+
+```bash
+pnpm run build
+```
+
+构建产物在 `dist` 目录
+
+### 预览构建
+
+```bash
+pnpm run preview
+```
+
+### 代码检查
+
+```bash
+# ESLint 检查
+pnpm run lint
+
+# ESLint 自动修复
+pnpm run fix
+
+# Stylelint 检查
+pnpm run lint:style
+
+# Stylelint 自动修复
+pnpm run lint:style-fix
+
+# Prettier 格式化
 pnpm run format
-git add .
 ```
 
--   `package.json`中添加：
 
-```cmd
-"config": {
-  "commitizen": {
-    "path": "./node_modules/cz-conventional-changelog"
+
+## 🔧 配置说明
+
+### 环境变量
+
+创建 `.env.development` 和 `.env.production` 文件：
+
+```bash
+# 开发环境
+VITE_API_BASE_URL=http://localhost:8080/schedule
+
+# 生产环境
+VITE_API_BASE_URL=https://api.example.com
+```
+
+### 代理配置
+
+修改 `vite.config.ts` 中的 proxy 配置：
+
+```typescript
+server: {
+  proxy: {
+    '/schedule': {
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+    }
   }
 }
 ```
 
-**之后执行`git add .`和`git cz`即可。**
-
-**注意不要把`.husky/`放入`.gitignore`。**
 
 
+## 📝 核心功能
 
-#### 2. 关于element-plus
+### 1. 用户认证
+- 用户注册（表单验证、用户名唯一性检查）
+- 用户登录（JWT Token 认证）
+- 用户退出（清除 Token 和用户信息）
+- 路由守卫（未登录自动跳转登录页）
 
-如果项目用到了element-plus，请如下配置：
+### 2. 日程管理
+- 日程列表（分页查询、加载状态）
+- 添加日程（表单验证、自动聚焦）
+- 编辑日程（数据回填、实时验证）
+- 删除日程（二次确认弹窗）
+- 状态切换（快速标记完成/未完成）
 
--   执行：
+### 3. 状态管理
+- 用户信息全局共享（Pinia）
+- Token 持久化（localStorage）
+- 响应式数据更新
 
-```cmd
-pnpm install element-plus @element-plus/icons-vue
+### 4. 错误处理
+- 统一的错误码体系
+- 友好的错误提示
+- Token 过期自动跳转登录
+
+
+
+## 🎨 代码规范
+
+### TypeScript
+
+- 使用严格模式
+- 接口优先于类型别名
+- 明确的类型注解
+
+### Vue 组件
+
+- 使用 Composition API
+- 单文件组件（SFC）
+- `<script setup>` 语法糖
+- Props 类型定义
+
+### 样式
+
+- 使用 SCSS 预处理器
+- BEM 命名规范（推荐）
+- 组件样式 scoped
+
+### Git Commit
+
+遵循 Conventional Commits：
+
+```
+feat: 新功能
+fix: 修复 Bug
+docs: 文档更新
+style: 代码格式调整
+refactor: 重构
+perf: 性能优化
+test: 测试相关
+chore: 构建/工具链相关
 ```
 
--   `main.ts`
 
-```ts
-import { createApp } from 'vue';
-import App from './App.vue';
-import ElementPlus from 'element-plus';
-import 'element-plus/dist/index.css';
-import zhCn from 'element-plus/es/locale/lang/zh-cn';   // 导入中文语言包,这样设置后所有ElementPlus的所有组件都会显示为中文文本
 
-const app = createApp(App);
-app.use(ElementPlus,{
-    locale:zhCn
-});
-app.mount('#app');
+## 🔌 API 对接
+
+### 请求拦截器
+
+```typescript
+// 自动添加 Token
+request.interceptors.request.use(config => {
+  const token = getToken()
+  if (token) {
+    config.headers.token = token
+  }
+  return config
+})
 ```
+
+### 响应拦截器
+
+```typescript
+// 统一错误处理
+request.interceptors.response.use(
+  response => response.data,
+  error => {
+    if (error.response?.status === 401) {
+      // Token 过期，跳转登录
+      router.push('/login')
+    }
+    return Promise.reject(error)
+  }
+)
+```
+
+
+
+## 📊 性能优化
+
+- ✅ 路由懒加载
+- ✅ 组件按需引入
+- ✅ 图片懒加载
+- ✅ 防抖/节流
+- ✅ 请求缓存
+
+
+
+## 📚 参考文档
+
+- [Vue 3 官方文档](https://cn.vuejs.org/)
+- [Element Plus 文档](https://element-plus.org/zh-CN/)
+- [Pinia 文档](https://pinia.vuejs.org/zh/)
+- [Vue Router 文档](https://router.vuejs.org/zh/)
+- [Vite 文档](https://cn.vitejs.dev/)
+- [TypeScript 文档](https://www.typescriptlang.org/zh/)
