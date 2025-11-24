@@ -42,6 +42,7 @@ public enum ResultCodeEnum {
     SCHEDULE_TIME_INVALID(2003, "日程时间无效"),
     SCHEDULE_DELETE_FAIL(2004, "日程删除失败"),
     SCHEDULE_UPDATE_FAIL(2005, "日程更新失败"),
+    SCHEDULE_ADD_FAIL(2006, "日程添加失败"),
     
     // ==================== 认证授权模块（3xxx）====================
     TOKEN_EMPTY(3001, "Token 不能为空"),

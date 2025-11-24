@@ -19,6 +19,28 @@ export interface ResponseData {
 
 // 用户信息类型
 export interface UserInfo {
-    id: number;
+    uid: number;
     username: string;
+}
+
+// 日程类型
+export interface Schedule {
+    sid: number;
+    uid: number;
+    title: string;
+    completed: number; // 0-未完成, 1-已完成
+}
+
+// 分页数据类型
+export interface PageResult<T> {
+    records: T[];
+    total: number;
+    pageNum?: number;
+    pageSize?: number;
+    pages?: number;
+}
+
+// 请求日程列表的返回类型
+export interface ScheduleListResponseData extends ResponseData {
+    data: PageResult<Schedule>;
 }

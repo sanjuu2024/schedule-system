@@ -1,6 +1,8 @@
 <template>
     <Header class="header"></Header>
-    <router-view></router-view>
+    <div class="container">
+        <router-view></router-view>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -12,7 +14,18 @@ defineOptions({
 
 <style scoped lang="scss">
 .header {
-    height: 200px;
-    padding: 50px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+    padding: 30px 50px;
+    z-index: 999;
+    background-color: #fff;
+    // box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+
+.container {
+    padding-top: 200px;
 }
 </style>

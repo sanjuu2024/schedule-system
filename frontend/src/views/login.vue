@@ -148,6 +148,8 @@ async function login() {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-top: 100px;
+    max-height: 100vh;
 }
 
 .el-card {

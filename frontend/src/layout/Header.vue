@@ -55,6 +55,10 @@ async function logout() {
 
 <style scoped lang="scss">
 .box {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     text-align: center;
     .nav {
         text-align: right; // 让按钮们靠右显示(就两个)

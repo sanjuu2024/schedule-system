@@ -9,7 +9,7 @@ export const useUserStore = defineStore('user', {
     state: () => ({
         token: getToken(),
         userInfo: {
-            id: 0,
+            uid: 0,
             username: '',
         } as UserInfo,
     }),
@@ -47,7 +47,7 @@ export const useUserStore = defineStore('user', {
                 ElMessage.success('退出成功');
                 removeToken();
                 this.token = '';
-                this.userInfo = { id: 0, username: '' };
+                this.userInfo = { uid: 0, username: '' };
                 router.push('/login');
             } else {
                 ElMessage.error('退出失败：' + res.message);

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="app-container">
         <router-view></router-view>
     </div>
 </template>
@@ -10,4 +10,8 @@ defineOptions({
 });
 </script>
 
-<style></style>
+<style scoped>
+#app-container {
+    min-height: 100vh;
+}
+</style>
