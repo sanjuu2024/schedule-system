@@ -1,4 +1,4 @@
-package com.atguigu.schedule.controller;
+package com.atguigu.schedule.controller.v1;
 
 import com.atguigu.schedule.common.Result;
 import com.atguigu.schedule.common.ResultCodeEnum;

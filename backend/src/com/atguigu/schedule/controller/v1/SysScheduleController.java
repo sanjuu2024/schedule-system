@@ -1,4 +1,4 @@
-package com.atguigu.schedule.controller;
+package com.atguigu.schedule.controller.v1;
 
 import com.atguigu.schedule.common.PageResult;
 import com.atguigu.schedule.common.ResultCodeEnum;
@@ -6,8 +6,6 @@ import com.atguigu.schedule.pojo.SysSchedule;
 import com.atguigu.schedule.service.SysScheduleService;
 import com.atguigu.schedule.service.impl.SysScheduleServiceImpl;
 import com.atguigu.schedule.util.JWTUtil;
-import com.atguigu.schedule.util.JsonUtil;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
